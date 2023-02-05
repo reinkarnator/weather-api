@@ -75,10 +75,10 @@ $app->configure('app');
 // $app->middleware([
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
-
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+     'weather_service_validate' => App\Http\Middleware\WeatherServiceNameValidate::class,
+     'weather_api_version' => App\Http\Middleware\WeatherAPIVersionValidate::class,
+]);
 
 /*
 |--------------------------------------------------------------------------

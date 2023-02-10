@@ -23,9 +23,8 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
-
-// $app->withEloquent();
+ $app->withFacades();
+ $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +59,9 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('weather');
+$app->configure('database');
+$app->configure('statistic');
 
 /*
 |--------------------------------------------------------------------------
@@ -91,7 +93,8 @@ $app->routeMiddleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\RouteServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
@@ -105,11 +108,5 @@ $app->routeMiddleware([
 | can respond to, as well as the controllers that may handle them.
 |
 */
-
-$app->router->group([
-    'namespace' => 'App\Http\Controllers',
-], function ($router) {
-    require __DIR__.'/../routes/web.php';
-});
 
 return $app;

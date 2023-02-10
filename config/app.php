@@ -53,6 +53,5 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
     'key' => env('APP_KEY'),
     'timezone' => env('APP_TIMEZONE', 'Europe/Moscow'),
-    'available_api_version' => ['1', '2'],
     'default_api_version' => '1'
 ];

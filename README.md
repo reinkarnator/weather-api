@@ -1,24 +1,57 @@
-# Lumen PHP Framework
+# Weather API based on Lumen
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/lumen)](https://packagist.org/packages/laravel/lumen-framework)
+АПИ для отображения погоды в различных сервисах. При вызове каждого метода, отображаются подсказки, либо, конкретный результат. 
+Получение списка доступных сущностей:
+```php
+/api
+```
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+Получение списка доступных версий:
+```php
+/api/{entity_name}
+```
 
-## Official Documentation
+Получение списка доступных сервисов:
+```php
+/api/{entity_name}/{version}
+```
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+## Сущность погоды (weather)
 
-## Contributing
+Получение списка доступных сервисов и методов погоды:
+```php
+/api/weather/{version}/
+```
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Получение результата погоды по городу:
+```php
+/api/weather/{version}/{service_name}/{city}
+```
 
-## Security Vulnerabilities
+## Сущность статистики (statistic)
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+Получение списка доступных методов статистики:
+```php
+/api/statistic/{version}/
+```
 
-## License
+Получение данных за дневной, месячный периоды, либо популярные запросы:
+```php
+/api/statistic/{version}/{method}
+```
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+В коде реализована версионность сущностей.  
+
+## Добавление сервисов погоды
+
+Для добавления сервиса, необходимо создать класс сущности в нужной версии АПИ, также создать абстрактную сущность этого класса в директории без версии для переиспользования в других версиях.
+```php
+app/Services/Weather/{version}/{service_class}
+app/Services/Weather/{abstract_class}
+```
+Основную реализацию методов можно оставить в абстракции.
+
+В абстракции реализуются 2 метода валидатора: isIgnored, isValidInstance
+Также 2 внутренних метода: getName, getAvailAbleMethods
+
+Валидация нужного сервиса по полю {service_name} проходит по полю name в классе сервиса. 

@@ -9,6 +9,12 @@ use Illuminate\Support\Collection;
 final class ServiceDetector implements InfrastructureInterface
 {
 
+    /**
+     * @param string $serviceName
+     * @param string $instance
+     * @return AbstractServiceInterface|null
+     * @throws \ReflectionException
+     */
     public function detectInstance(string $serviceName, string $instance): ?AbstractServiceInterface
     {
         $instances = $this->getReflectionInstancesList($instance);

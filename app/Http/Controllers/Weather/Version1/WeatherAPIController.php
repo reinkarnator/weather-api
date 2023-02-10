@@ -27,6 +27,8 @@ final class WeatherAPIController extends Controller
     }
 
     /**
+     * Getting weather by city and service
+     *
      * @param string $city
      * @param string $apiName
      * @return array
@@ -49,6 +51,9 @@ final class WeatherAPIController extends Controller
     }
 
     /**
+     * Getting average weather by city from all services
+     *
+     *
      * @param string $city
      * @return array
      */

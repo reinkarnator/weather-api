@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
             return new AggregateService($detector);
         });
 
-        $this->app->bind(GlobalRepositoryInterface::class, function () use ($detector) {
+        $this->app->bind(GlobalRepositoryInterface::class, function () {
             return RepositoryContainer::detectRepository();
         });
     }

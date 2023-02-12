@@ -11,7 +11,7 @@ trait EndpointsDescribeTrait
     public function list(): array
     {
         return [
-            'services' => $this->common->listServiceNames(),
+            'services' => $this->serviceLocator->listServiceNames(),
             'methods' => [
                 'average',
             ]
@@ -26,7 +26,7 @@ trait EndpointsDescribeTrait
     public function intro(string $apiName): array
     {
         return [
-            'methods' => $this->common->getAvailAbleMethods($apiName)
+            'methods' => $this->serviceLocator->getAvailAbleMethods($apiName)
         ];
     }
 

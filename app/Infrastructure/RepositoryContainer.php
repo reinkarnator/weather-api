@@ -17,12 +17,10 @@ final class RepositoryContainer implements InfrastructureInterface
      *
      * @return GlobalRepositoryInterface
      */
-    public function detectRepository(string $serviceName): GlobalRepositoryInterface
+    public static function detectRepository(): GlobalRepositoryInterface
     {
         try {
-            $versionedRepository = self::REPOSITORY_BASE . '\\' . NamespaceHelper::getNamespaceVersionAndService(
-                    $serviceName
-                ) . '\\' . self::REPOSITORY;
+            $versionedRepository = self::REPOSITORY_BASE . '\\' . NamespaceHelper::getNamespaceVersionAndService() . '\\' . self::REPOSITORY;
             return new $versionedRepository();
         } catch (\Throwable $error) {
             Log::debug($error);

@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Request;
+
 final class NamespaceHelper
 {
     const VERSION_PREFIX = 'Version';
@@ -12,9 +14,10 @@ final class NamespaceHelper
      * @param string $serviceName
      * @return string
      */
-    public static function getNamespaceVersionAndService(string $serviceName)
+    public static function getNamespaceVersionAndService()
     {
-       return ucfirst($serviceName) . '\\' .self::getNamespaceVersion();
+       $entity = Request::segment(2);
+       return ucfirst($entity) . '\\' .self::getNamespaceVersion();
     }
 
     /**
@@ -24,6 +27,6 @@ final class NamespaceHelper
      */
     public static function getNamespaceVersion()
     {
-        return self::VERSION_PREFIX . config('app.default_api_version');
+        return self::VERSION_PREFIX . Request::segment(3);
     }
 }

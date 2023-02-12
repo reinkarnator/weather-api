@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Weather\Version1;
 
-use App\Http\Controllers\Controller;
 use App\Common\Weather\AbstractAggregateService;
-use App\Infrastructure\RepositoryContainer;
+use App\Http\Controllers\Controller;
 use App\Repositories\GlobalRepositoryInterface;
 use App\Traits\Weather\Version1\EndpointsDescribeTrait;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -17,14 +16,10 @@ final class WeatherAPIController extends Controller
     const CURRENT_VERSION = 1,
           AVERAGE_SERVICE = 'average';
 
-    private GlobalRepositoryInterface $repository;
-
     public function __construct(
-        private AbstractAggregateService $common,
-        RepositoryContainer $repositoryContainer
-    ) {
-        $this->repository = $repositoryContainer->detectRepository('weather');
-    }
+        private AbstractAggregateService $serviceLocator,
+        private GlobalRepositoryInterface $repository
+    ) {}
 
     /**
      * Getting weather by city and service
@@ -35,7 +30,7 @@ final class WeatherAPIController extends Controller
      */
     public function getByCity(string $city, string $apiName): array
     {
-        $service = $this->common->detectService($apiName);
+        $service = $this->serviceLocator->detectService($apiName);
 
         $weatherValue = $service->getByCity($city);
         if (!$weatherValue) {
@@ -59,7 +54,7 @@ final class WeatherAPIController extends Controller
      */
     public function averageByCity(string $city): array
     {
-        $services = $this->common->getServicesList();
+        $services = $this->serviceLocator->getServicesList();
 
         $temperature = 0;
         $i = 0;

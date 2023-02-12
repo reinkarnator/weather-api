@@ -13,6 +13,8 @@
 |
 */
 
+use App\Helpers\NamespaceHelper;
+
 $router->get('/', function () use ($router) {
     return [
         'services' => [
@@ -36,30 +38,37 @@ $router->group(
             [
                 'prefix' => '{version:[0-9]+}',
                 'middleware' => ['weather_api_version'],
-                'namespace' => \App\Helpers\NamespaceHelper::getNamespaceVersionAndService('weather')
             ],
-            function () use ($router) {
-                $router->get('/',  ['uses' => 'WeatherAPIController@list']);
+            function ($router) {
                 $router->group(
                     [
-                        'prefix' => 'average',
+                        'namespace' => NamespaceHelper::getNamespaceVersionAndService()
                     ],
-                    function () use ($router) {
-                        $router->get('/',  ['uses' => 'WeatherAPIController@averageIntro']);
-                        $router->get('{city}',  ['uses' => 'WeatherAPIController@averageByCity']);
+                    function ($router) {
+                        $router->get('/', ['uses' => 'WeatherAPIController@list']);
+                        $router->group(
+                            [
+                                'prefix' => 'average',
+                            ],
+                            function () use ($router) {
+                                $router->get('/', ['uses' => 'WeatherAPIController@averageIntro']);
+                                $router->get('{city}', ['uses' => 'WeatherAPIController@averageByCity']);
+                            }
+                        );
+                        $router->group(
+                            [
+                                'prefix' => '{apiName:[a-z]+}',
+                                'middleware' => ['weather_service_validate']
+                            ],
+                            function () use ($router) {
+                                $router->get('/', ['uses' => 'WeatherAPIController@intro']);
+                                $router->get('{city}', ['uses' => 'WeatherAPIController@getByCity']);
+                            }
+                        );
                     }
                 );
-                $router->group(
-                    [
-                        'prefix' => '{apiName:[a-z]+}',
-                        'middleware' => ['weather_service_validate']
-                    ],
-                    function () use ($router) {
-                        $router->get('/',  ['uses' => 'WeatherAPIController@intro']);
-                        $router->get('{city}',  ['uses' => 'WeatherAPIController@getByCity']);
-                    }
-                );
-        });
+            }
+        );
     }
 );
 
@@ -76,40 +85,43 @@ $router->group(
         $router->group(
             [
                 'prefix' => '{version:[0-9]+}',
-                'middleware' => ['weather_api_version'],
-                'namespace' => \App\Helpers\NamespaceHelper::getNamespaceVersionAndService('statistic')
+                'middleware' => ['statistic_api_version'],
             ],
             function () use ($router) {
-                $router->get('/',  function () use ($router) {
-                    return [
-                        'versions' => config('statistic.available_methods')
-                    ];
-                });
                 $router->group(
                     [
-                        'prefix' => 'popular',
+                        'namespace' => NamespaceHelper::getNamespaceVersionAndService()
                     ],
-                    function () use ($router) {
-                        $router->get('/',  ['uses' => 'StatisticAPIController@getPopular']);
+                    function ($router) {
+                        $router->get('/', ['uses' => 'StatisticAPIController@getMethodsList']);
+                        $router->group(
+                            [
+                                'prefix' => 'popular',
+                            ],
+                            function () use ($router) {
+                                $router->get('/', ['uses' => 'StatisticAPIController@getPopular']);
+                            }
+                        );
+                        $router->group(
+                            [
+                                'prefix' => 'monthly',
+                            ],
+                            function () use ($router) {
+                                $router->get('/', ['uses' => 'StatisticAPIController@getMontly']);
+                            }
+                        );
+                        $router->group(
+                            [
+                                'prefix' => 'daily',
+                            ],
+                            function () use ($router) {
+                                $router->get('/', ['uses' => 'StatisticAPIController@getDaily']);
+                            }
+                        );
                     }
                 );
-                $router->group(
-                    [
-                        'prefix' => 'monthly',
-                    ],
-                    function () use ($router) {
-                        $router->get('/',  ['uses' => 'StatisticAPIController@getMontly']);
-                    }
-                );
-                $router->group(
-                    [
-                        'prefix' => 'daily',
-                    ],
-                    function () use ($router) {
-                        $router->get('/',  ['uses' => 'StatisticAPIController@getDaily']);
-                    }
-                );
-            });
+            }
+        );
     }
 );
 

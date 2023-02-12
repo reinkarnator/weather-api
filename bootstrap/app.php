@@ -80,6 +80,7 @@ $app->configure('statistic');
 $app->routeMiddleware([
      'weather_service_validate' => App\Http\Middleware\WeatherServiceNameValidate::class,
      'weather_api_version' => App\Http\Middleware\WeatherAPIVersionValidate::class,
+     'statistic_api_version' => App\Http\Middleware\StatisticAPIVersionValidate::class,
 ]);
 
 /*

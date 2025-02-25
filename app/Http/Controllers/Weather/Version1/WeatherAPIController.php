@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Weather\Version1;
 use App\Common\Weather\AbstractAggregateService;
 use App\Http\Controllers\Controller;
 use App\Repositories\GlobalRepositoryInterface;
-use App\Traits\Weather\Version1\EndpointsDescribeTrait;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class WeatherAPIController extends Controller
 {
-    use EndpointsDescribeTrait;
-
     const CURRENT_VERSION = 1,
           AVERAGE_SERVICE = 'average';
 
@@ -20,6 +17,48 @@ final class WeatherAPIController extends Controller
         private AbstractAggregateService $serviceLocator,
         private GlobalRepositoryInterface $repository
     ) {}
+
+    /**
+     * List of available services and methods on root request
+     *
+     * @return array
+     */
+    public function list(): array
+    {
+        return [
+            'services' => $this->serviceLocator->listServiceNames(),
+            'methods' => [
+                'average',
+            ]
+        ];
+    }
+
+    /**
+     * List of available methods
+     *
+     * @param string $apiName
+     * @return array
+     */
+    public function intro(string $apiName): array
+    {
+        return [
+            'methods' => $this->serviceLocator->getAvailAbleMethods($apiName)
+        ];
+    }
+
+    /**
+     * List of methods on average call
+     *
+     * @return \string[][]
+     */
+    public function averageIntro(): array
+    {
+        return [
+            'methods' => [
+                '{city_name}',
+            ]
+        ];
+    }
 
     /**
      * Getting weather by city and service

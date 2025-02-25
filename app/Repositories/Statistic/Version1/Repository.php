@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Statistic\Version1;
 
-use App\Repositories\Statistic\RepositoryInterface;
 use App\Models\Version1\Statistic;
+use App\Repositories\Statistic\RepositoryInterface;
 use Illuminate\Support\Carbon;
 
 /**
@@ -11,6 +11,9 @@ use Illuminate\Support\Carbon;
  */
 final class Repository implements RepositoryInterface
 {
+    /**
+     * @var Statistic
+     */
     private Statistic $statisticModel;
 
     const RELATIONS = ['city', 'version', 'service'];
@@ -22,7 +25,9 @@ final class Repository implements RepositoryInterface
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * Getting monthly statistics
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getMonthly()
     {
@@ -33,7 +38,9 @@ final class Repository implements RepositoryInterface
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * Getting daily statistics
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getDaily()
     {
@@ -44,7 +51,9 @@ final class Repository implements RepositoryInterface
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * Getting popular statistics
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getPopular()
     {

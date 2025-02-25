@@ -40,18 +40,16 @@ abstract class AbstractAggregateService
     public function getServicesList(): Collection
     {
         try {
-            $serviceCollection = $this->serviceDetector->getReflectionInstancesList(AbstractServiceInterface::class)->filter(
-                function ($instance) {
+            $serviceCollection = $this->serviceDetector->getReflectionInstancesList(AbstractServiceInterface::class)
+                ->filter(function ($instance) {
                     return (!$instance->isIgnored());
-                }
-            );
+                });
 
             if ($serviceCollection->isEmpty()) {
                 throw new \Exception("Services not found");
             }
 
             return  $serviceCollection;
-
         } catch (\Throwable $error) {
             Log::debug($error);
             throw new NotFoundHttpException("Incorrect request");

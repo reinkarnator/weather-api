@@ -13,9 +13,21 @@ use Illuminate\Support\Facades\Log;
  */
 final class Repository extends AbstractRepository
 {
+    /**
+     * @var Cities
+     */
     private Cities $citiesModel;
+    /**
+     * @var Versions
+     */
     private Versions $versionsModel;
+    /**
+     * @var Services
+     */
     private Services $servicesModel;
+    /**
+     * @var Statistic
+     */
     private Statistic $statisticModel;
 
     public function __construct()
@@ -27,6 +39,8 @@ final class Repository extends AbstractRepository
     }
 
     /**
+     * Saving weather
+     *
      * @param string $city
      * @param string $version
      * @param string $service

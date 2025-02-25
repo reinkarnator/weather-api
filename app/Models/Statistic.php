@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class Statistic extends Model implements GlobalModelInterface
 {
+    use HasFactory;
+
     const UPDATED_AT = null;
     /**
      * @var string
